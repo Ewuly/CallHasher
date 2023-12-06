@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { abi, contractAddress } from "./constants.js";
 import { ethers } from 'ethers';
-import Web3 from 'web3';
+import { Web3 } from 'web3';
 import './App.css';
 
 function App() {
