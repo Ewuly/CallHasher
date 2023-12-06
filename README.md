@@ -1,7 +1,7 @@
 # React + Vite
 
 # Quick Start
--git clone https://github.com/Ewuly/CallHasher.git
+-git clone https://github.com/Ewuly/CallHasher.git 
 -open the folder
 -open a terminal
 -yarn
