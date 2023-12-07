@@ -1,8 +1,13 @@
 # React + Vite
+Contract Hasher (0x80e559e6E96202151101a0962b246b6FFdeEd15c)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![image](https://github.com/Ewuly/CallHasher/assets/72886617/18f7678d-50a7-4cde-a4f6-f856cd055d05)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Quick Start
+-git clone https://github.com/Ewuly/CallHasher.git  
+-open the folder  
+-open a terminal  
+-yarn  
+-yarn run dev  
+-you have to be on sepolia testnet  
+-test the hash function (calling from Hasher contract)
