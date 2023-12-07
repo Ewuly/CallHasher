@@ -3,6 +3,7 @@ import { abi, contractAddress } from "./constants.js";
 import { ethers } from 'ethers';
 import { Web3 } from 'web3';
 import './App.css';
+import { checkProperties } from 'ethers/lib/utils.js';
 
 function App() {
   const [move, setMove] = useState(0);
@@ -10,6 +11,8 @@ function App() {
   const [hashResult, setHashResult] = useState('');
   const [connectionStatus, setConnectionStatus] = useState('Disconnected'); // Added state for button text
   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const [network, setNetwork] = useState(null);
+
 
 
   const handleMoveChange = (event) => {
@@ -19,40 +22,80 @@ function App() {
   const handleSaltChange = (event) => {
     setSalt(event.target.value);
   };
-  async function getHash() {
+
+  const getHash = async () => {
     try {
+      console.log("1");
+      const networkData = await provider.getNetwork();
+      console.log("a");
+      try {
         if (typeof window.ethereum !== "undefined") {
-          // console.log('MetaMask is installed!');
-            // Check if MetaMask is connected
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            if (accounts.length > 0) {
-              // console.log('MetaMask is connected!');
-                setConnectionStatus('Connected');
-                const contract = new web3.eth.Contract(abi, contractAddress);
+          console.log('MetaMask is installed!');
+          // Check if MetaMask is connected
+          const web3 = new Web3(window.ethereum);
+          const accounts = await web3.eth.getAccounts();
+          if (accounts.length > 0) {
+            console.log('MetaMask is connected!');
+            setConnectionStatus('Connected');
 
-                // Retrieve the name
-                const hash = await contract.methods.hash(move,salt).call();
-                setHashResult(hash);
-                console.log(hash);
-            }
-            else {
-                // setConnectionStatus('Please connect MetaMask');
+            if (networkData.chainId !== 11155111) {
+
+              console.log('This is not Sepolia network.');
+
+              // Provide a user-friendly message
+              // const switchNetworkMessage = `Please switch to the Sepolia network (ID: 11155111) in your MetaMask.`;
+              // alert(switchNetworkMessage);
+
+              // Prompt the user to switch networks
+              if (window.ethereum) {
                 try {
-                  await ethereum.request({ method: "eth_requestAccounts" })
-                  setConnectionStatus('Connected'); // Update button text
-                  const accounts = await ethereum.request({ method: "eth_accounts" })
-                  console.log(accounts)
-                } catch (error) {
-                  console.log(error)
-                }
-            }
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
+                  await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [
+                      {
+                        chainId: '0xaa36a7', // Sepolia network chain ID
 
+                      },
+                    ],
+                  });
+                  // Reload the page after switching the network
+                  window.location.reload();
+                } catch (error) {
+                  console.error("Error switching chain:");
+                  console.error(error);
+                }
+              }
+            }
+            console.log("hello");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            // Retrieve the name
+            const hash = await contract.methods.hash(move, salt).call();
+            setHashResult(hash);
+            console.log(hash);
+          }
+          else {
+            setConnectionStatus('Please connect MetaMask');
+            try {
+              await ethereum.request({ method: "eth_requestAccounts" })
+              setConnectionStatus('Connected'); // Update button text
+              const accounts = await ethereum.request({ method: "eth_accounts" })
+              console.log(accounts)
+            } catch (error) {
+              console.log("error")
+              console.log(error)
+            }
+          }
+        }
+      } catch (error) {
+        window.location.reload();
+        console.error(error);
+      }
+    } catch (error) {
+      window.location.reload();
+      console.log(error);
+    }
+  }
 
 
   async function connect() {
