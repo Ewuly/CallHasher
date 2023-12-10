@@ -1,5 +1,5 @@
-export const contractAddress = "0x80e559e6E96202151101a0962b246b6FFdeEd15c";
-export const abi = [
+export const HasherAddress = "0x80e559e6E96202151101a0962b246b6FFdeEd15c";
+export const HasherAbi = [
     {
       "inputs": [
         {
